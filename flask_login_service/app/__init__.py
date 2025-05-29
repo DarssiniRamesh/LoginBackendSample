@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from .routes.health import blp
 from flask_smorest import Api
-
+from .routes.login import login_bp  # Import the login blueprint
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -13,6 +13,8 @@ app.config['OPENAPI_URL_PREFIX'] = '/docs'
 app.config["OPENAPI_SWAGGER_UI_PATH"] = ""
 app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
-
 api = Api(app)
 api.register_blueprint(blp)
+
+# Register the login blueprint directly on the Flask app (not on the Api)
+app.register_blueprint(login_bp)
