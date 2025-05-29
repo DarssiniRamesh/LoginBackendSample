@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Test</title>
+    <style>
+        body { font-family: sans-serif; max-width: 350px; margin: 3em auto; }
+        form { display: flex; flex-direction: column; gap: 0.5em; }
+        label { font-weight: bold; }
+        input { padding: 0.3em; font-size: 1em; }
+        button { padding: 0.4em; font-size: 1em; }
+        #result { margin-top: 1.2em; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h2>Test Login</h2>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input id="email" type="email" required>
+
+        <label for="password">Password:</label>
+        <input id="password" type="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        // PUBLIC_INTERFACE
+        document.getElementById('loginForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '';
+            resultDiv.className = '';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const resp = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await resp.json();
+                if (resp.ok) {
+                    resultDiv.className = 'success';
+                    resultDiv.textContent = "Login successful! User: " + JSON.stringify(data, null, 2);
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.textContent = data.error ? "Error: " + data.error : "Login failed";
+                }
+            } catch (e) {
+                resultDiv.className = 'error';
+                resultDiv.textContent = "Error: Could not connect to backend.";
+            }
+        };
+    </script>
+</body>
+</html>
