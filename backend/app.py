@@ -208,6 +208,34 @@ def create_app():
             "expires_in": JWT_EXP_DELTA_SECONDS
         }), 200
 
+    # POST /api/profile endpoint
+    @app.route("/api/profile", methods=["POST"])
+    # PUBLIC_INTERFACE
+    def profile():
+        """
+        Accepts a token and user_id, validates both, and returns the user profile if valid.
+        Returns a standardized error if validation fails.
+        ---
+        Request JSON: { "token": "<jwt>", "user_id": "<user_id>" }
+        Returns: { "profile": {...} } or { "error": "..."}
+        """
+        data = request.get_json(silent=True)
+        if not data or "token" not in data or "user_id" not in data:
+            return jsonify({"error": "Missing token or user_id"}), 400
+
+        token = data["token"]
+        user_id = data["user_id"]
+
+        # Validate token and user_id using helper
+        if not check_user_identity(token, user_id):
+            return jsonify({"error": "Invalid or expired token, or user_id does not match token"}), 401
+
+        username, user = get_user_by_id(user_id)
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        return jsonify({"profile": user["profile"]}), 200
+
     return app
 
 if __name__ == "__main__":
