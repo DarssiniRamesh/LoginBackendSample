@@ -5,13 +5,94 @@ import datetime
 # Hardcoded users: username maps to dict with password, user_id, profile info
 HARDCODED_USERS = {
     "johndoe": {
-        "password": "password123",  # You may update this to something else if required
+        "password": "password123",
         "user_id": "USER001",
         "profile": {
             "name": "John Doe",
             "email": "user@example.com",
             "contact_number": "1234567890",
         },
+    },
+    "alicew": {
+        "password": "alicepass321",
+        "user_id": "USER002",
+        "profile": {
+            "name": "Alice Williams",
+            "email": "alice.williams@example.com",
+            "contact_number": "5551234561",
+        }
+    },
+    "bobb": {
+        "password": "bobsecure!",
+        "user_id": "USER003",
+        "profile": {
+            "name": "Bob Brown",
+            "email": "bob.brown@example.com",
+            "contact_number": "5552233445",
+        }
+    },
+    "carlaj": {
+        "password": "carla_j_pass",
+        "user_id": "USER004",
+        "profile": {
+            "name": "Carla Johnson",
+            "email": "carla.johnson@example.com",
+            "contact_number": "5556677889",
+        }
+    },
+    "daves": {
+        "password": "davesafepassword",
+        "user_id": "USER005",
+        "profile": {
+            "name": "Dave Smith",
+            "email": "dave.smith@example.com",
+            "contact_number": "5559988776",
+        }
+    },
+    "elenaq": {
+        "password": "elenaQ@pass",
+        "user_id": "USER006",
+        "profile": {
+            "name": "Elena Quintana",
+            "email": "elena.quintana@example.com",
+            "contact_number": "5553344556",
+        }
+    },
+    "frankm": {
+        "password": "frankman123",
+        "user_id": "USER007",
+        "profile": {
+            "name": "Frank Moore",
+            "email": "frank.moore@example.com",
+            "contact_number": "5554455667",
+        }
+    },
+    "ginaw": {
+        "password": "ginawelcome",
+        "user_id": "USER008",
+        "profile": {
+            "name": "Gina White",
+            "email": "gina.white@example.com",
+            "contact_number": "5555566778",
+        }
+    },
+    "heidic": {
+        "password": "heidiComplexPwd9",
+        "user_id": "USER009",
+        "profile": {
+            "name": "Heidi Clark",
+            "email": "heidi.clark@example.com",
+            "contact_number": "5556677880",
+        }
+    },
+    "ignacioq": {
+        "password": "iggyQpass2024",
+        "user_id": "USER010",
+        "profile": {
+            "name": "Ignacio Quint",
+            "email": "ignacio.quint@example.com",
+            "contact_number": "5557788991",
+        }
     }
 }
 
