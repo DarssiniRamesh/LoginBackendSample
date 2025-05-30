@@ -352,7 +352,11 @@ def create_app():
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        return jsonify({"profile": user["profile"]}), 200
+        # Build flat profile dict including user_id as specified
+        profile_data = dict(user["profile"])
+        profile_data["user_id"] = user["user_id"]
+
+        return jsonify(profile_data), 200
 
     return app
 
