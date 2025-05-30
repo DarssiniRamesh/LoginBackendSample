@@ -352,9 +352,15 @@ def create_app():
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        # Build flat profile dict including user_id as specified
-        profile_data = dict(user["profile"])
-        profile_data["user_id"] = user["user_id"]
+        # Build flat profile dict including user_id as specified, in required field order
+        from collections import OrderedDict
+        profile = user["profile"]
+        profile_data = OrderedDict([
+            ("name", profile.get("name", "")),
+            ("email", profile.get("email", "")),
+            ("user_id", user["user_id"]),
+            ("contact_number", profile.get("contact_number", "")),
+        ])
 
         return jsonify(profile_data), 200
 
