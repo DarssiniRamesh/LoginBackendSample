@@ -2,92 +2,210 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login/Profile Flask API Test</title>
+    <title>Flask Login Service • Demo Frontend</title>
+    <meta name="viewport" content="width=480,initial-scale=1">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #f8f8f8;
-            color: #333;
+        html,body {
+            background: #f7fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #27314b;
+            margin: 0;
+            padding: 0;
         }
-        h2 {
+        h1 {
+            text-align: center;
+            font-size: 2.1em;
+            padding: 28px 0 14px 0;
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 34px;
+        }
+        .panel {
+            background: white;
+            border-radius: 11px;
+            box-shadow: 0 2px 16px rgba(78,102,165,0.10);
+            width: 370px;
+            min-width: 260px;
+            min-height: 220px;
+            margin-bottom: 6px;
+            padding: 30px 28px 22px 28px;
+        }
+        .api-label {
+            font-size: 1.12em;
+            font-weight: 600;
             color: #38598b;
+            margin-bottom: 7px;
+            letter-spacing: 0.03em;
         }
-        section {
-            background: #fff;
-            border-radius: 6px;
-            padding: 20px 30px 20px 30px;
-            margin-bottom: 35px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            width: 400px;
+        form {
+            margin-top: 8px;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+        label {
+            margin-top: 9px;
+            margin-bottom: 0;
+            font-size: 0.98em;
+            color: #293947;
+            font-weight: 500;
         }
         input[type="text"], input[type="password"] {
-            width: 85%;
-            padding: 8px;
-            margin: 8px 0 16px 0;
-            border: 1px solid #ccc;
+            width: 97%;
+            font-size: 1em;
+            padding: 9px 7px;
+            margin: 3px 0 9px 0;
+            border: 1px solid #bccbe2;
             border-radius: 4px;
+            background: #f3f7fc;
+            transition: border 0.13s;
         }
-        button {
-            background-color: #38598b;
-            color: white;
-            padding: 10px 22px;
+        input[type="text"]:focus, input[type="password"]:focus {
+            border: 1.3px solid #636fd3;
+            outline: none;
+            background: #fff;
+        }
+        .button-row {
+            text-align: right;
+            margin-top: 2px;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #35518b 80%, #599bc7 100%);
+            color: #fff;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-        button:hover {
-            background-color: #2c4267;
-        }
-        .response {
-            background: #f2f6ff;
-            padding: 10px 14px;
             border-radius: 5px;
-            margin-top: 10px;
-            font-size: 14px;
-            border: 1px solid #bcd4ff;
-            max-width: 90vw;
-            overflow-x: auto;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 9px 29px;
+            margin-top: 7px;
+            margin-bottom: 4px;
+            box-shadow: 0 1px 6px 0px rgba(81,138,207,0.08);
+            letter-spacing: 0.04em;
         }
-        .form-label {
+        button[type="submit"]:hover {
+            background: #223967;
+        }
+        .section-divider {
+            border-top: 1px solid #e7edf7;
+            margin: 22px 0 14px 0;
+        }
+        .info-text {
+            font-size: 0.98em;
+            background: #eef6fa;
+            padding: 7px 12px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 9px;
+            color: #3879c9;
+        }
+        .demo-note {
+            text-align: center;
+            font-size: 1em;
+            margin: 5px 0 28px 0;
+            color: #656c7c;
+            font-style: italic;
+            background: none;
+        }
+        .response-block {
+            background: #f3f9ff;
+            border: 1px solid #d7e9fb;
+            color: #24334d;
+            margin-top: 13px;
+            padding: 13px 15px;
+            border-radius: 6px;
+            min-height: 32px;
+            font-size: 0.98em;
+            word-break: break-word;
+            line-height: 1.5;
+            font-family: 'Menlo', 'Consolas', monospace;
+        }
+        .profile-card {
             display: block;
-            margin-top: 6px;
+            background: linear-gradient(90deg,#f1f8ed 70%, #edf6fa 100%);
+            border: 1.5px solid #b4e2be;
+            color: #22413d;
+            border-radius: 7px;
+            margin-top: 5px;
+            margin-bottom: 1px;
+            padding: 17px 17px 12px 16px;
+            box-shadow: 0 1px 6px 0px rgba(24,110,64,0.04);
+            font-size: 1.08em;
+        }
+        .profile-card b {
+            color: #317667;
+        }
+        .profile-err {
+            color: #be2e2e;
+            font-weight: bold;
+        }
+        @media (max-width: 520px) {
+            .panel {width: 96vw;}
+            main {padding: 0 6px;}
         }
     </style>
 </head>
 <body>
-    <h1>Flask Backend Login/Profile API Tester</h1>
-    <section>
-        <h2>1. /api/login</h2>
-        <div>
-            <label class="form-label" for="login-username">Username:</label>
-            <input type="text" id="login-username" value="" placeholder="e.g. johndoe"/><br>
-            <label class="form-label" for="login-password">Password:</label>
-            <input type="password" id="login-password" value="" placeholder="Enter password"/><br>
-            <button onclick="performLogin()">Authenticate</button>
-        </div>
-        <div id="login-response" class="response"></div>
-    </section>
-    <section>
-        <h2>2. /api/profile</h2>
-        <div>
-            <label class="form-label" for="profile-userid">User ID:</label>
-            <input type="text" id="profile-userid" value="" placeholder="e.g. USER001"/><br>
-            <label class="form-label" for="profile-token">Token:</label>
-            <input type="text" id="profile-token" value="" style="font-size:12px" placeholder="Paste token here"/><br>
-            <button onclick="fetchProfile()">Get Profile</button>
-        </div>
-        <div id="profile-response" class="response"></div>
-    </section>
+    <h1>Flask Login Service &mdash; Demo Frontend</h1>
+    <div class="demo-note">This is a sample UI for demonstrating API authentication &amp; profile retrieval.<br>
+        Use any username/password from the backend's hardcoded user list.<br>
+        <span style="color:#5175bd">Try <b>johndoe&nbsp;/&nbsp;password123</b>, <b>alicew&nbsp;/&nbsp;alicepass321</b>, ...</span>
+    </div>
+    <main>
+        <!-- LOGIN PANEL -->
+        <section class="panel" id="login-panel">
+            <div class="api-label">1. <tt>POST /api/login</tt> &mdash; User Login</div>
+            <div class="info-text">
+                Enter a username and password to request a login token. <br>
+                <span style="color:#789">If login is successful, the JWT token and expiry time will be displayed below.</span>
+            </div>
+            <form id="login-form" autocomplete="off">
+                <label for="login-username">Username <span style="color:#aaa;font-size:0.94em">(e.g. johndoe)</span></label>
+                <input type="text" id="login-username" name="username" maxlength="18" placeholder="Username" required>
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" maxlength="32" autocomplete="current-password" placeholder="Enter password" required>
+                <div class="button-row">
+                  <button type="submit">Get Token</button>
+                </div>
+            </form>
+            <div id="login-response" class="response-block"></div>
+        </section>
+
+        <!-- PROFILE PANEL -->
+        <section class="panel" id="profile-panel">
+            <div class="api-label">2. <tt>POST /api/profile</tt> &mdash; Fetch Profile</div>
+            <div class="info-text">
+                Paste your <b>Token</b> & user ID below to retrieve the user profile.<br>
+                <span style="color:#789">Requires a valid JWT (from above), and a user ID, e.g. <b>USER001</b>.</span>
+            </div>
+            <form id="profile-form" autocomplete="off">
+                <label for="profile-userid">User ID <span style="color:#aaa; font-size:0.94em">(e.g. USER001)</span></label>
+                <input type="text" id="profile-userid" name="user_id" maxlength="14" placeholder="e.g. USER001" required>
+                <label for="profile-token">Token</label>
+                <input type="text" id="profile-token" name="token" style="font-size:13px" maxlength="700" placeholder="Paste JWT token here" required>
+                <div class="button-row">
+                  <button type="submit">Get Profile</button>
+                </div>
+            </form>
+            <div id="profile-response" class="response-block"></div>
+        </section>
+    </main>
+
 <script>
 // PUBLIC_INTERFACE
-function performLogin() {
+// Handles the login form submission and talks to /api/login endpoint.
+document.getElementById("login-form").addEventListener("submit", function(e) {
+    e.preventDefault();
     const username = document.getElementById("login-username").value.trim();
     const password = document.getElementById("login-password").value;
     const responseDiv = document.getElementById("login-response");
-    responseDiv.textContent = "Authenticating...";
-
+    responseDiv.innerHTML = "Authenticating...";
     fetch("/api/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -96,28 +214,31 @@ function performLogin() {
     .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
     .then(({status, body}) => {
         if (status === 200 && body.token) {
-            responseDiv.innerHTML = `<b style="color:green;">✅ Success!</b><br>
+            responseDiv.innerHTML = '' +
+                `<span style="color:#2b9540;font-weight:bold">✅ Authenticated</span><br>
                 <b>Token:</b> <span style="font-size:12px;word-break:break-all">${body.token}</span><br>
                 <b>Expires In:</b> ${body.expires_in}s`;
-            // For convenience, paste the token to profile section
+            // For convenience, put the token into the Profile form.
             document.getElementById("profile-token").value = body.token;
-        } else if (body.error) {
-            responseDiv.innerHTML = `<b style="color:red;">Error:</b> ${body.error}`;
+        } else if (body && body.error) {
+            responseDiv.innerHTML = `<span style="color:#b32d2d">❌</span> <span class="profile-err">${body.error}</span>`;
         } else {
-            responseDiv.innerHTML = `<b style="color:red;">Unexpected response.</b>`;
+            responseDiv.innerHTML = `<span class="profile-err">Unexpected response from server.</span>`;
         }
-    }).catch(e => {
-        responseDiv.innerHTML = `<b style="color:red;">Network or server error</b><br>${e}`;
+    })
+    .catch(err => {
+        responseDiv.innerHTML = `<span class="profile-err">Network/server error:</span> ${err}`;
     });
-}
+});
 
 // PUBLIC_INTERFACE
-function fetchProfile() {
+// Handles the profile form submission and talks to /api/profile endpoint.
+document.getElementById("profile-form").addEventListener("submit", function(e) {
+    e.preventDefault();
     const user_id = document.getElementById("profile-userid").value.trim();
     const token = document.getElementById("profile-token").value.trim();
     const responseDiv = document.getElementById("profile-response");
-    responseDiv.textContent = "Fetching profile...";
-
+    responseDiv.innerHTML = "Fetching profile...";
     fetch("/api/profile", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -126,16 +247,30 @@ function fetchProfile() {
     .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
     .then(({status, body}) => {
         if (status === 200 && body.profile) {
-            responseDiv.innerHTML = `<b style="color:green;">✅ Profile Fetched!</b><pre style="margin:0;margin-top:6px">${JSON.stringify(body.profile, null, 2)}</pre>`;
-        } else if (body.error) {
-            responseDiv.innerHTML = `<b style="color:red;">Error:</b> ${body.error}`;
+            const p = body.profile;
+            responseDiv.innerHTML =
+                `<div class="profile-card">
+                  <span style="font-size: 1.15em; font-weight: bold; color: #206459">👤 ${p.name}</span><br>
+                  <b>Email:</b> <span>${p.email}</span><br>
+                  <b>Contact:</b> <span>${p.contact_number}</span>
+                </div>`;
+        } else if (body && body.error) {
+            responseDiv.innerHTML = `<span style="color:#b32d2d">❌</span> <span class="profile-err">${body.error}</span>`;
         } else {
-            responseDiv.innerHTML = `<b style="color:red;">Unexpected response.</b>`;
+            responseDiv.innerHTML = `<span class="profile-err">Unexpected response from server.</span>`;
         }
-    }).catch(e => {
-        responseDiv.innerHTML = `<b style="color:red;">Network or server error</b><br>${e}`;
+    })
+    .catch(err => {
+        responseDiv.innerHTML = `<span class="profile-err">Network/server error:</span> ${err}`;
     });
-}
+});
+
+// OPTIONAL: Autofill user for easy demo
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("login-username").value = "johndoe";
+    document.getElementById("login-password").value = "password123";
+    document.getElementById("profile-userid").value = "USER001";
+});
 </script>
 </body>
 </html>
