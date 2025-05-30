@@ -56,7 +56,7 @@
             color: #293947;
             font-weight: 500;
         }
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], input[type="email"] {
             width: 97%;
             font-size: 1em;
             padding: 9px 7px;
@@ -66,7 +66,7 @@
             background: #f3f7fc;
             transition: border 0.13s;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
             border: 1.3px solid #636fd3;
             outline: none;
             background: #fff;
@@ -154,8 +154,8 @@
 <body>
     <h1>Flask Login Service &mdash; Demo Frontend</h1>
     <div class="demo-note">This is a sample UI for demonstrating API authentication &amp; profile retrieval.<br>
-        Use any username/password from the backend's hardcoded user list.<br>
-        <span style="color:#5175bd">Try <b>johndoe&nbsp;/&nbsp;password123</b>, <b>alicew&nbsp;/&nbsp;alicepass321</b>, ...</span>
+        Use any <b>email</b>/password from the backend's hardcoded user list.<br>
+        <span style="color:#5175bd">Try <b>user@example.com&nbsp;/&nbsp;password123</b>, <b>alice.williams@example.com&nbsp;/&nbsp;alicepass321</b>, ...</span>
     </div>
     <main>
         <!-- LOGIN PANEL -->
@@ -202,20 +202,20 @@
 // Handles the login form submission and talks to /api/login endpoint.
 document.getElementById("login-form").addEventListener("submit", function(e) {
     e.preventDefault();
-    const username = document.getElementById("login-username").value.trim();
+    const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value;
     const responseDiv = document.getElementById("login-response");
     responseDiv.innerHTML = "Authenticating...";
     fetch("/api/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({email, password})
     })
     .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
     .then(({status, body}) => {
         if (status === 200 && body.token) {
-            responseDiv.innerHTML = '' +
-                `<span style="color:#2b9540;font-weight:bold">✅ Authenticated</span><br>
+            responseDiv.innerHTML = ''
+                + `<span style="color:#2b9540;font-weight:bold">✅ Authenticated</span><br>
                 <b>Token:</b> <span style="font-size:12px;word-break:break-all">${body.token}</span><br>
                 <b>Expires In:</b> ${body.expires_in}s`;
             // For convenience, put the token into the Profile form.
