@@ -1,0 +1,15 @@
+# Development environment set up for Flask Login Service and React frontend.
+# Backend dependencies (system-wide or managed by distribution):
+# - Python 3.x (found: 3.12.3)
+# - pip (found: 24.0)
+# - Flask (found: 3.1.1, system-managed; upgrade skipped due to PEP 668)
+# - PyJWT (found: 2.7.0, system-managed; upgrade skipped due to PEP 668)
+# Frontend dependencies (JavaScript):
+# - Node.js (found: v18.19.1)
+# - npm (found: 9.2.0)
+# - React (installed via npm at latest)
+#
+# Dependency versions are consistent with system or the most recent available from npm/pip.
+# Python packages upgradable only in a virtualenv or with --break-system-packages flag due to externally managed environment (PEP 668).
+# No additional required dependency versions were specified by the central configuration for this use-case.
+# All installs succeeded or were already present.
