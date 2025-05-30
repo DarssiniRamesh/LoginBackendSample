@@ -4,33 +4,15 @@ import datetime
 
 # Hardcoded users: username maps to dict with password, user_id, profile info
 HARDCODED_USERS = {
-    "alice": {
-        "password": "password123",
-        "user_id": "u001",
+    "johndoe": {
+        "password": "password123",  # You may update this to something else if required
+        "user_id": "USER001",
         "profile": {
-            "name": "Alice Smith",
-            "role": "admin",
-            "email": "alice@example.com",
+            "name": "John Doe",
+            "email": "user@example.com",
+            "contact_number": "1234567890",
         },
-    },
-    "bob": {
-        "password": "bobpass",
-        "user_id": "u002",
-        "profile": {
-            "name": "Bob Jones",
-            "role": "user",
-            "email": "bob@example.com",
-        },
-    },
-    "carol": {
-        "password": "carolpw",
-        "user_id": "u003",
-        "profile": {
-            "name": "Carol White",
-            "role": "user",
-            "email": "carol@example.com",
-        },
-    },
+    }
 }
 
 # JWT configuration
