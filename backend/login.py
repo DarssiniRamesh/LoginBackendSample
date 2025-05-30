@@ -102,18 +102,17 @@ JWT_ALGORITHM = "HS256"
 JWT_EXP_DELTA_SECONDS = 3600  # 1 hour
 
 # PUBLIC_INTERFACE
-def check_credentials(username: str, password: str):
+def check_credentials_by_email(email: str, password: str):
     """
-    Checks if the provided username and password are correct.
+    Checks if the provided email and password are correct.
 
     Returns:
         (bool, dict) - (success, user dictionary if authenticated, else None)
     """
-    user = HARDCODED_USERS.get(username)
-    if user and user["password"] == password:
-        return True, user
-    else:
-        return False, None
+    for user in HARDCODED_USERS.values():
+        if user["profile"]["email"].lower() == email.lower() and user["password"] == password:
+            return True, user
+    return False, None
 
 # PUBLIC_INTERFACE
 def generate_token(user_id: str):
@@ -185,22 +184,22 @@ def create_app():
     # PUBLIC_INTERFACE
     def login():
         """
-        Authenticates a user using hardcoded credentials. 
+        Authenticates a user using email and password.
         Returns a JWT token with expiry on success, or a standardized JSON error on failure.
         ---
-        Request JSON: { "username": "...", "password": "..." }
+        Request JSON: { "email": "...", "password": "..." }
         Returns: { "token": "<jwt>", "expires_in": <seconds> } or { "error": "..."}
         """
         data = request.get_json(silent=True)
-        if not data or "username" not in data or "password" not in data:
-            return jsonify({"error": "Missing username or password"}), 400
+        if not data or "email" not in data or "password" not in data:
+            return jsonify({"error": "Missing email or password"}), 400
 
-        username = data["username"].strip()
+        email = data["email"].strip()
         password = data["password"]
 
-        success, user = check_credentials(username, password)
+        success, user = check_credentials_by_email(email, password)
         if not success:
-            return jsonify({"error": "Invalid username or password"}), 401
+            return jsonify({"error": "Invalid email or password"}), 401
 
         token = generate_token(user["user_id"])
         return jsonify({
