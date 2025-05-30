@@ -101,7 +101,7 @@ HARDCODED_USERS = {
 # JWT configuration
 JWT_SECRET = "CHANGE_ME_TO_SOMETHING_SECURE"
 JWT_ALGORITHM = "HS256"
-JWT_EXP_DELTA_SECONDS = 3600  # 1 hour
+JWT_EXP_DELTA_SECONDS = 60  # 1 minute
 
 # PUBLIC_INTERFACE
 def check_credentials_by_email(email: str, password: str):
