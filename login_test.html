@@ -201,7 +201,7 @@
 /*
 PUBLIC_INTERFACE
 Handles the login form submission and talks to /api/login endpoint.
-Updates to send { email, password } as the payload (no user_id in login).
+Update: Sends { email, password } as the payload (no user_id in login).
 */
 document.getElementById("login-form").addEventListener("submit", function(e) {
     e.preventDefault();
