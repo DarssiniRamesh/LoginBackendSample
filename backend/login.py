@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import jwt
 import datetime
-from flasgger import Swagger
 
 
 # Hardcoded users: mapping username -> dict with password, user_id, profile info
