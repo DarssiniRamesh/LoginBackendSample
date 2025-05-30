@@ -162,12 +162,12 @@
         <section class="panel" id="login-panel">
             <div class="api-label">1. <tt>POST /api/login</tt> &mdash; User Login</div>
             <div class="info-text">
-                Enter a username and password to request a login token. <br>
+                Enter your email and password to request a login token. <br>
                 <span style="color:#789">If login is successful, the JWT token and expiry time will be displayed below.</span>
             </div>
             <form id="login-form" autocomplete="off">
-                <label for="login-username">Username <span style="color:#aaa;font-size:0.94em">(e.g. johndoe)</span></label>
-                <input type="text" id="login-username" name="username" maxlength="18" placeholder="Username" required>
+                <label for="login-email">Email <span style="color:#aaa;font-size:0.94em">(e.g. user@example.com)</span></label>
+                <input type="email" id="login-email" name="email" maxlength="64" placeholder="user@example.com" required>
                 <label for="login-password">Password</label>
                 <input type="password" id="login-password" name="password" maxlength="32" autocomplete="current-password" placeholder="Enter password" required>
                 <div class="button-row">
