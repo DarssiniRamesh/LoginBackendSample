@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login/Profile Flask API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f8f8f8;
+            color: #333;
+        }
+        h2 {
+            color: #38598b;
+        }
+        section {
+            background: #fff;
+            border-radius: 6px;
+            padding: 20px 30px 20px 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            width: 400px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 85%;
+            padding: 8px;
+            margin: 8px 0 16px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #38598b;
+            color: white;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        button:hover {
+            background-color: #2c4267;
+        }
+        .response {
+            background: #f2f6ff;
+            padding: 10px 14px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            border: 1px solid #bcd4ff;
+            max-width: 90vw;
+            overflow-x: auto;
+        }
+        .form-label {
+            display: block;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flask Backend Login/Profile API Tester</h1>
+    <section>
+        <h2>1. /api/login</h2>
+        <div>
+            <label class="form-label" for="login-username">Username:</label>
+            <input type="text" id="login-username" value="" placeholder="e.g. johndoe"/><br>
+            <label class="form-label" for="login-password">Password:</label>
+            <input type="password" id="login-password" value="" placeholder="Enter password"/><br>
+            <button onclick="performLogin()">Authenticate</button>
+        </div>
+        <div id="login-response" class="response"></div>
+    </section>
+    <section>
+        <h2>2. /api/profile</h2>
+        <div>
+            <label class="form-label" for="profile-userid">User ID:</label>
+            <input type="text" id="profile-userid" value="" placeholder="e.g. USER001"/><br>
+            <label class="form-label" for="profile-token">Token:</label>
+            <input type="text" id="profile-token" value="" style="font-size:12px" placeholder="Paste token here"/><br>
+            <button onclick="fetchProfile()">Get Profile</button>
+        </div>
+        <div id="profile-response" class="response"></div>
+    </section>
+<script>
+// PUBLIC_INTERFACE
+function performLogin() {
+    const username = document.getElementById("login-username").value.trim();
+    const password = document.getElementById("login-password").value;
+    const responseDiv = document.getElementById("login-response");
+    responseDiv.textContent = "Authenticating...";
+
+    fetch("/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password})
+    })
+    .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
+    .then(({status, body}) => {
+        if (status === 200 && body.token) {
+            responseDiv.innerHTML = `<b style="color:green;">✅ Success!</b><br>
+                <b>Token:</b> <span style="font-size:12px;word-break:break-all">${body.token}</span><br>
+                <b>Expires In:</b> ${body.expires_in}s`;
+            // For convenience, paste the token to profile section
+            document.getElementById("profile-token").value = body.token;
+        } else if (body.error) {
+            responseDiv.innerHTML = `<b style="color:red;">Error:</b> ${body.error}`;
+        } else {
+            responseDiv.innerHTML = `<b style="color:red;">Unexpected response.</b>`;
+        }
+    }).catch(e => {
+        responseDiv.innerHTML = `<b style="color:red;">Network or server error</b><br>${e}`;
+    });
+}
+
+// PUBLIC_INTERFACE
+function fetchProfile() {
+    const user_id = document.getElementById("profile-userid").value.trim();
+    const token = document.getElementById("profile-token").value.trim();
+    const responseDiv = document.getElementById("profile-response");
+    responseDiv.textContent = "Fetching profile...";
+
+    fetch("/api/profile", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({user_id, token})
+    })
+    .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
+    .then(({status, body}) => {
+        if (status === 200 && body.profile) {
+            responseDiv.innerHTML = `<b style="color:green;">✅ Profile Fetched!</b><pre style="margin:0;margin-top:6px">${JSON.stringify(body.profile, null, 2)}</pre>`;
+        } else if (body.error) {
+            responseDiv.innerHTML = `<b style="color:red;">Error:</b> ${body.error}`;
+        } else {
+            responseDiv.innerHTML = `<b style="color:red;">Unexpected response.</b>`;
+        }
+    }).catch(e => {
+        responseDiv.innerHTML = `<b style="color:red;">Network or server error</b><br>${e}`;
+    });
+}
+</script>
+</body>
+</html>
