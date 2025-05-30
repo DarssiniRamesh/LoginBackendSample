@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import jwt
 import datetime
 
-# Hardcoded users: username maps to dict with password, user_id, profile info
+# Hardcoded users: mapping username -> dict with password, user_id, profile info
 HARDCODED_USERS = {
     "johndoe": {
         "password": "password123",
@@ -104,10 +104,9 @@ JWT_EXP_DELTA_SECONDS = 3600  # 1 hour
 # PUBLIC_INTERFACE
 def check_credentials_by_email(email: str, password: str):
     """
-    Checks if the provided email and password are correct.
-
+    Checks if a user exists with given email and password.
     Returns:
-        (bool, dict) - (success, user dictionary if authenticated, else None)
+        (success: bool, user: dict or None)
     """
     for user in HARDCODED_USERS.values():
         if user["profile"]["email"].lower() == email.lower() and user["password"] == password:
@@ -150,7 +149,6 @@ def validate_token(token: str):
 def get_user_by_id(user_id: str):
     """
     Returns user dictionary (containing username, user_id, profile, etc.) by user_id.
-
     Returns:
         (tuple) (username, user_dict), or (None, None) if not found
     """
@@ -163,20 +161,17 @@ def get_user_by_id(user_id: str):
 def check_user_identity(token: str, user_id: str):
     """
     Validates token and checks if the embedded user_id matches the supplied user_id.
-
     Returns:
-        (bool) True if token is valid and user_id matches, False otherwise.
+        True if token valid and user_id matches, else False.
     """
     payload = validate_token(token)
     if not payload or "user_id" not in payload:
         return False
     return payload["user_id"] == user_id
 
-from flask import request, jsonify
-
 # PUBLIC_INTERFACE
 def create_app():
-    """Creates and configures the Flask application."""
+    """Creates and configures the Flask application with required authentication endpoints."""
     app = Flask(__name__)
 
     # POST /api/login endpoint
@@ -184,11 +179,11 @@ def create_app():
     # PUBLIC_INTERFACE
     def login():
         """
-        Authenticates a user using email and password.
+        Authenticates a user using hardcoded credentials (email + password).
         Returns a JWT token with expiry on success, or a standardized JSON error on failure.
-        ---
+
         Request JSON: { "email": "...", "password": "..." }
-        Returns: { "token": "<jwt>", "expires_in": <seconds> } or { "error": "..."}
+        Response: { "token": "<jwt>", "expires_in": <seconds> } or { "error": "..."}
         """
         data = request.get_json(silent=True)
         if not data or "email" not in data or "password" not in data:
@@ -213,10 +208,9 @@ def create_app():
     def profile():
         """
         Accepts a token and user_id, validates both, and returns the user profile if valid.
-        Returns a standardized error if validation fails.
-        ---
+
         Request JSON: { "token": "<jwt>", "user_id": "<user_id>" }
-        Returns: { "profile": {...} } or { "error": "..."}
+        Response: { "profile": {...} } or { "error": "..."}
         """
         data = request.get_json(silent=True)
         if not data or "token" not in data or "user_id" not in data:
@@ -225,7 +219,7 @@ def create_app():
         token = data["token"]
         user_id = data["user_id"]
 
-        # Validate token and user_id using helper
+        # Validate token and user_id
         if not check_user_identity(token, user_id):
             return jsonify({"error": "Invalid or expired token, or user_id does not match token"}), 401
 
