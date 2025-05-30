@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import jwt
 import datetime
 
@@ -173,6 +174,8 @@ def check_user_identity(token: str, user_id: str):
 def create_app():
     """Creates and configures the Flask application with required authentication endpoints."""
     app = Flask(__name__)
+    # Allow CORS for all routes and origins (development mode)
+    CORS(app)
 
     # POST /api/login endpoint
     @app.route("/api/login", methods=["POST"])
