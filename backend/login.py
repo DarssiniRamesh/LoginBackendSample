@@ -173,24 +173,10 @@ def check_user_identity(token: str, user_id: str):
 
 # PUBLIC_INTERFACE
 def create_app():
-    """Creates and configures the Flask application with required authentication endpoints and Swagger UI."""
+    """Creates and configures the Flask application with required authentication endpoints."""
     app = Flask(__name__)
     # Allow CORS for all routes and origins (development mode)
     CORS(app)
-
-    # Flasgger Configuration
-    swagger_template = {
-        "openapi": "3.0.2",
-        "info": {
-            "title": "Login/Profile API",
-            "description": "API for authenticating users and getting profiles. Interactive Swagger UI docs available.",
-            "version": "1.0.0"
-        },
-        "servers": [
-            {"url": "/"}
-        ]
-    }
-    Swagger(app, template=swagger_template)
 
     # POST /api/login endpoint
     @app.route("/api/login", methods=["POST"])
@@ -198,56 +184,6 @@ def create_app():
     def login():
         """
         Authenticates a user using hardcoded credentials (email + password).
-        ---
-        tags:
-          - Authentication
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - email
-                  - password
-                properties:
-                  email:
-                    type: string
-                    format: email
-                  password:
-                    type: string
-        responses:
-          200:
-            description: Token issued
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    token:
-                      type: string
-                      description: JWT token
-                    expires_in:
-                      type: integer
-                      description: Expiry (seconds)
-          400:
-            description: Missing credentials
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-          401:
-            description: Invalid credentials
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
         """
         data = request.get_json(silent=True)
         if not data or "email" not in data or "password" not in data:
@@ -272,69 +208,6 @@ def create_app():
     def profile():
         """
         Accepts a token and user_id, validates both, and returns the user profile if valid.
-        ---
-        tags:
-          - Profile
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - token
-                  - user_id
-                properties:
-                  token:
-                    type: string
-                    description: JWT token from /api/login
-                  user_id:
-                    type: string
-                    description: User ID string
-        responses:
-          200:
-            description: User profile returned
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    profile:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                        email:
-                          type: string
-                        contact_number:
-                          type: string
-          400:
-            description: Missing fields
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-          401:
-            description: Invalid/expired token or mismatched user_id
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-          404:
-            description: Profile not found
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
         """
         data = request.get_json(silent=True)
         if not data or "token" not in data or "user_id" not in data:
