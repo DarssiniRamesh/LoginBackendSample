@@ -173,13 +173,40 @@ def check_user_identity(token: str, user_id: str):
         return False
     return payload["user_id"] == user_id
 
+from flask import request, jsonify
+
 # PUBLIC_INTERFACE
 def create_app():
     """Creates and configures the Flask application."""
     app = Flask(__name__)
 
-    # Placeholder for future config and blueprint registrations
-    # Currently, no endpoints are registered
+    # POST /api/login endpoint
+    @app.route("/api/login", methods=["POST"])
+    # PUBLIC_INTERFACE
+    def login():
+        """
+        Authenticates a user using hardcoded credentials. 
+        Returns a JWT token with expiry on success, or a standardized JSON error on failure.
+        ---
+        Request JSON: { "username": "...", "password": "..." }
+        Returns: { "token": "<jwt>", "expires_in": <seconds> } or { "error": "..."}
+        """
+        data = request.get_json(silent=True)
+        if not data or "username" not in data or "password" not in data:
+            return jsonify({"error": "Missing username or password"}), 400
+
+        username = data["username"].strip()
+        password = data["password"]
+
+        success, user = check_credentials(username, password)
+        if not success:
+            return jsonify({"error": "Invalid username or password"}), 401
+
+        token = generate_token(user["user_id"])
+        return jsonify({
+            "token": token,
+            "expires_in": JWT_EXP_DELTA_SECONDS
+        }), 200
 
     return app
 
