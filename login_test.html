@@ -198,8 +198,11 @@
     </main>
 
 <script>
-// PUBLIC_INTERFACE
-// Handles the login form submission and talks to /api/login endpoint.
+/*
+PUBLIC_INTERFACE
+Handles the login form submission and talks to /api/login endpoint.
+Updates to send { email, password } as the payload (no user_id in login).
+*/
 document.getElementById("login-form").addEventListener("submit", function(e) {
     e.preventDefault();
     const email = document.getElementById("login-email").value.trim();
@@ -209,7 +212,8 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
     fetch("/api/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, password})
+        // The backend expects { "email": ... , "password": ... }
+        body: JSON.stringify({ email, password })
     })
     .then(resp => resp.json().then(data => ({status: resp.status, body: data})))
     .then(({status, body}) => {
