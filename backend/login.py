@@ -199,7 +199,8 @@ def create_app():
         token = generate_token(user["user_id"])
         return jsonify({
             "token": token,
-            "expires_in": JWT_EXP_DELTA_SECONDS
+            "expires_in": JWT_EXP_DELTA_SECONDS,
+            "user_id": user["user_id"]
         }), 200
 
     # POST /api/profile endpoint
