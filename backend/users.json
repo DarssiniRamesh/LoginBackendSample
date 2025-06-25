@@ -1,0 +1,82 @@
+[
+  {
+    "username": "johndoe",
+    "email": "user@example.com",
+    "password": "password123",
+    "user_id": "USER001",
+    "name": "John Doe",
+    "contact_number": "1234567890"
+  },
+  {
+    "username": "alicew",
+    "email": "alice.williams@example.com",
+    "password": "alicepass321",
+    "user_id": "USER002",
+    "name": "Alice Williams",
+    "contact_number": "5551234561"
+  },
+  {
+    "username": "bobb",
+    "email": "bob.brown@example.com",
+    "password": "bobsecure!",
+    "user_id": "USER003",
+    "name": "Bob Brown",
+    "contact_number": "5552233445"
+  },
+  {
+    "username": "carlaj",
+    "email": "carla.johnson@example.com",
+    "password": "carla_j_pass",
+    "user_id": "USER004",
+    "name": "Carla Johnson",
+    "contact_number": "5556677889"
+  },
+  {
+    "username": "daves",
+    "email": "dave.smith@example.com",
+    "password": "davesafepassword",
+    "user_id": "USER005",
+    "name": "Dave Smith",
+    "contact_number": "5559988776"
+  },
+  {
+    "username": "elenaq",
+    "email": "elena.quintana@example.com",
+    "password": "elenaQ@pass",
+    "user_id": "USER006",
+    "name": "Elena Quintana",
+    "contact_number": "5553344556"
+  },
+  {
+    "username": "frankm",
+    "email": "frank.moore@example.com",
+    "password": "frankman123",
+    "user_id": "USER007",
+    "name": "Frank Moore",
+    "contact_number": "5554455667"
+  },
+  {
+    "username": "ginaw",
+    "email": "gina.white@example.com",
+    "password": "ginawelcome",
+    "user_id": "USER008",
+    "name": "Gina White",
+    "contact_number": "5555566778"
+  },
+  {
+    "username": "heidic",
+    "email": "heidi.clark@example.com",
+    "password": "heidiComplexPwd9",
+    "user_id": "USER009",
+    "name": "Heidi Clark",
+    "contact_number": "5556677880"
+  },
+  {
+    "username": "ignacioq",
+    "email": "ignacio.quint@example.com",
+    "password": "iggyQpass2024",
+    "user_id": "USER010",
+    "name": "Ignacio Quint",
+    "contact_number": "5557788991"
+  }
+]
